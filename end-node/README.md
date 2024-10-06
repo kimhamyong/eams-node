@@ -18,6 +18,12 @@ The Arduino UNO boards are connected with various sensors to detect pressure, so
 - DH, DL: Set to the coordinator's MAC address.
 ```
 
+## End-Node Settings
+```
+- Arduino IDE Version: 2.2.1
+- XCTU Version: 6.5.13.2
+```
+
 ## End-Node Components
 ```
 - Arduino UNO
@@ -33,18 +39,19 @@ The Arduino UNO boards are connected with various sensors to detect pressure, so
 The connections between each sensor and the Arduino UNO board are as follows:
 
 1. Pressure Sensor:
-   - One terminal of the sensor is connected to an analog pin on the Arduino
-   - The other terminal is connected to GND through a 10kΩ resistor, and simultaneously directly to 5V
+   - VCC: Connected to 5V on the Arduino
+   - GND: Connected to GND on the Arduino
+   - OUT: Connected to an analog pin on the Arduino(A0)
 
 2. Sound Sensor:
    - VCC: Connected to 5V on the Arduino
    - GND: Connected to GND on the Arduino
-   - OUT: Connected to an analog pin on the Arduino
+   - OUT: Connected to an analog pin on the Arduino(A0)
 
 3. PIR Sensor:
    - VCC: Connected to 5V on the Arduino
    - GND: Connected to GND on the Arduino
-   - OUT: Connected to a digital pin on the Arduino
+   - OUT: Connected to a digital pin on the Arduino(pin 13)
 
 4. XBee Shield:
    - Mounted directly on top of the Arduino UNO board
