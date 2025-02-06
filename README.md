@@ -1,6 +1,26 @@
 ## Code Description
 The Arduino UNO boards are connected with various sensors to detect pressure, sound, and human movement. Each Arduino UNO is connected to a ZigBee module and shield, allowing the collected sensor data to be transmitted to the home gateway using the ZigBee protocol.  
 
+## Setup & Install
+
+1. **Initialize Arduino Board** (Without XBee Shield)  
+- Connect the board to your computer, install [Arduino IDE](https://www.arduino.cc/en/software), and select the correct **Board** and **Port** in **Tools**.  
+ - Upload an empty sketch to reset the board:  
+     ```cpp
+     void setup() {}  
+     void loop() {}
+     ```  
+
+2. **Install XCTU & Configure XBee**  
+- [Download XCTU](https://www.digi.com/resources/documentation/digidocs/90001526/tasks/t_download_and_install_xctu.htm) and install it.  
+- Attach the XBee shield, set it to **USB mode**, and configure the module in XCTU using [ZigBee Settings](#zigbee-settings).
+
+3. **Upload Code & Enable XBee Communication**  
+- Keep the XBee shield in **USB mode** and use Arduino IDE to upload the required code.  
+- After uploading, switch the XBee shield to **XBee mode** and start communication.  
+
+
+
 ## ZigBee Settings
 ```
 <Coordinator>
@@ -9,14 +29,45 @@ The Arduino UNO boards are connected with various sensors to detect pressure, so
 - CE: Enabled
 - DH: 0
 - DL: FFFF
-- APL: API enabled with escape
+- API: API enabled with escaping
 - BD: 9600
 
 <Router>
 - ID: Set the same ID for all nodes to communicate.
 - JV: Enabled
 - DH, DL: Set to the coordinator's MAC address.
+- API: API enabled with escaping
 ```
+
+## API 2 Mode Data Explanation
+
+### ZigBee API 2 Mode Overview
+
+- Ensures reliable transmission by escaping specific control bytes (`0x7E`, `0x7D`, `0x11`, `0x13`).  
+- Escaped bytes are prefixed with `0x7D` and XOR-ed with `0x20`, requiring decoding. 
+- **Decoding rule:** Any byte after `0x7D` must be XOR-ed with `0x20` to restore its original value.  
+- Example: `7D 33` → `33 ^ 20 = 13` → Restored to `0x13`. 
+
+### Example of Received API 2 Frame
+When using sensor data transmission via XBee in API 2 Mode, a received frame may look like this: 
+```
+7E 00 0D 90 00 7D 33 A2 00 41 FC B7 A4 12 9A 01 34 34
+```
+
+
+### Breakdown of the Frame
+
+| Byte(s)                      | Description                | Value                 | Explanation                                   |
+| ---------------------------- | -------------------------- | --------------------- | --------------------------------------------- |
+| `7E`                         | Start Delimiter            | `0x7E`                | Indicates the beginning of an API frame.      |
+| `00 0D`                      | Length                     | `0x000D` (13 bytes)   | Length of the remaining bytes in the frame.   |
+| `90`                         | Frame Type                 | `0x90` (RX Indicator) | Received data frame from another XBee device. |
+| `00 7D 33 A2 00 41 FC B7 A4` | Source Address             | `0x0013A20041FCB7A4`  | MAC address of the sender (escaped).          |
+| `12 9A`                      | **16-bit Network Address** | `0x129A`              | Network address of the sender.                |
+| `01`                         | **Receive Options**        | `0x01`                | Acknowledgment received.                      |
+| `34`                         | **RF Data**                | `0x34`                | Actual data payload received.                 |
+| `34`                         | **Checksum**               | `0x34`                | Validates data integrity.                     |
+
 
 ## End-Node Settings
 ```
