@@ -1,4 +1,4 @@
-## Code Description
+## Overview
 The Arduino UNO boards are connected with various sensors to detect pressure, sound, and human movement. Each Arduino UNO is connected to a ZigBee module and shield, allowing the collected sensor data to be transmitted to the home gateway using the ZigBee protocol.  
 
 ## Setup & Install
@@ -51,7 +51,7 @@ The Arduino UNO boards are connected with various sensors to detect pressure, so
 ### Example of Received API 2 Frame
 When using sensor data transmission via XBee in API 2 Mode, a received frame may look like this: 
 ```
-7E 00 0D 90 00 7D 33 A2 00 41 FC B7 A4 12 9A 01 34 34
+7E 00 0D 90 00 7D 33 A2 00 41 FC B7 A4 12 9A 01 34 41
 ```
 
 
@@ -66,7 +66,7 @@ When using sensor data transmission via XBee in API 2 Mode, a received frame may
 | `12 9A`                      | **16-bit Network Address** | `0x129A`              | Network address of the sender.                |
 | `01`                         | **Receive Options**        | `0x01`                | Acknowledgment received.                      |
 | `34`                         | **RF Data**                | `0x34`                | Actual data payload received.                 |
-| `34`                         | **Checksum**               | `0x34`                | Validates data integrity.                     |
+| `41`                         | **Checksum**               | `0x41`                | Validates data integrity.                     |
 
 
 ## End-Node Settings
