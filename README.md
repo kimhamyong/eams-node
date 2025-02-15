@@ -1,3 +1,19 @@
+# Elderly Activity Monitoring System
+This project aims to prevent lonely deaths among elderly individuals living alone by providing a privacy-friendly home monitoring solution. Unlike traditional monitoring systems, this approach does not use cameras or wearable devices, ensuring a non-intrusive and respectful solution for elderly care.
+The system utilizes various sensors to track motion and activity patterns, transmitting data via a home gateway. If prolonged inactivity is detected, a warning message is sent to caregivers via the user interface.
+
+**This project is divided into multiple repositories:**  
+[Click Details] -> **[End-Node](https://github.com/kimhamyong/eams-node)**, **[Home-Gateway](https://github.com/kimhamyong/eams-gateway)**, **[Server](https://github.com/kimhamyong/eams-server)**
+
+```   
+ ┌──────────────┐           ┌──────────────────┐           ┌────────────┐           ┌────────┐
+ │   End Node   │     →     │   Home Gateway   │     →     │   Server   │     →     │   UI   │
+ └──────────────┘           │         │        │           └────────────┘           └────────┘
+                   (ZigBee) │         │        │   (MQTT)                (WebSocket)
+                            │    MQTT Broker   │
+                            └──────────────────┘  
+```
+
 ## Overview
 The Arduino UNO boards are connected with various sensors to detect pressure, sound, and human movement. Each Arduino UNO is connected to a ZigBee module and shield, allowing the collected sensor data to be transmitted to the home gateway using the ZigBee protocol.  
 
